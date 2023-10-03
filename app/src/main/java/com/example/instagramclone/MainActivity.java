@@ -32,11 +32,37 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        // kullanıcı eğer daha önceden giriş yapmışsa direkt giriş yapıyor, email ve şifre sormuyor
+        FirebaseUser user= mAuth.getCurrentUser();
+        if (user!=null){
+            reload();
+        }
 
 
     }
 
+    public void reload() {
+        Intent intent= new Intent(MainActivity.this,FeedActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void loginClicked(View view){
+        String eMail= binding.eMailText.getText().toString();
+        String password=binding.passwordText.getText().toString();
+        mAuth.signInWithEmailAndPassword(eMail,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    //giriş başarılı
+                   reload();
+                }
+                else{
+                    //giriş başarısız
+                    Toast.makeText(MainActivity.this,"Giriş başarısız !",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
     public void signUpClicked(View view){
@@ -50,15 +76,13 @@ public class MainActivity extends AppCompatActivity {
             mAuth.createUserWithEmailAndPassword(eMail,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
-                    //giriş başarılıysa
-                    Intent intent= new Intent(MainActivity.this,FeedActivity.class);
-                    startActivity(intent);
-                    finish();
+                    //kayıt başarılıysa
+                    reload();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    //giriş başarısızsa
+                    //kayıt başarısızsa
                     Toast.makeText(MainActivity.this,e.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
                 }
             });
