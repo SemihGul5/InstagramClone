@@ -5,29 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity {
-
+public class PostActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_post);
     }
 
-    private void loginClicked(View view){
+    private void postButtonClicked(View view){
 
     }
-    private void signInClicked(View view){
+    private void selectImage(View view){
 
     }
-
-
-
-
-
-
 }
-
